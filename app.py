@@ -8,15 +8,8 @@ st.set_page_config(
     page_title="RescuePlan",
     page_icon="🏮",
     layout="centered",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="expanded",
 )
-
-# ============================================================
-# LANGUAGE
-# ============================================================
-
-if "language" not in st.session_state:
-    st.session_state.language = "English"
 
 # ============================================================
 # CUSTOM CSS
@@ -24,7 +17,6 @@ if "language" not in st.session_state:
 
 st.markdown("""
 <style>
-
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap');
 
 html, body, [class*="css"] {
@@ -164,7 +156,6 @@ section[data-testid="stSidebar"] h2 {
     padding: 1rem;
     border-radius: 8px;
 }
-
 </style>
 """, unsafe_allow_html=True)
 
@@ -173,11 +164,15 @@ section[data-testid="stSidebar"] h2 {
 # SESSION STATE
 # ============================================================
 
+if "language" not in st.session_state:
+    st.session_state.language = "English"
+
 if "page" not in st.session_state:
     st.session_state.page = "home"
 
 if "step" not in st.session_state:
     st.session_state.step = 0
+
 
 sections = [
     "Warning Signs",
@@ -185,8 +180,9 @@ sections = [
     "Supportive People/Places",
     "People to Ask for Help",
     "Professional Contacts",
-    "Safer Environment"
+    "Safer Environment",
 ]
+
 
 for section in sections:
     key = section.lower().replace(" ", "_")
@@ -196,21 +192,23 @@ for section in sections:
 
 
 # ============================================================
-# TRANSLATIONS
+# LANGUAGE
 # ============================================================
 
 T = {
     "English": {
-        "app": "RescuePlan",
         "tagline": "A lantern for hard nights.",
-        "description":
+        "description": (
             "Build a personal safety plan while things are calm, "
-            "so you know what to do when things become difficult.",
+            "so you know what to do when things become difficult."
+        ),
         "build": "🌿 Build My Safety Plan",
         "help": "🆘 I Need Help Now",
         "privacy": "Designed with privacy in mind. No account is required.",
-        "warning": "This tool does not diagnose mental-health conditions "
-                   "or replace professional care.",
+        "warning": (
+            "This tool does not diagnose mental-health conditions "
+            "or replace professional care."
+        ),
         "next": "Next →",
         "back": "← Back",
         "complete": "View My Plan →",
@@ -219,30 +217,31 @@ T = {
     },
 
     "Tamil": {
-        "app": "RescuePlan",
         "tagline": "கடினமான நேரங்களுக்கான ஒரு விளக்கு.",
-        "description":
+        "description": (
             "நீங்கள் அமைதியாக இருக்கும் நேரத்தில் உங்கள் தனிப்பட்ட "
-            "பாதுகாப்புத் திட்டத்தை உருவாக்குங்கள்.",
+            "பாதுகாப்புத் திட்டத்தை உருவாக்குங்கள்."
+        ),
         "build": "🌿 எனது பாதுகாப்புத் திட்டத்தை உருவாக்கு",
         "help": "🆘 எனக்கு இப்போது உதவி தேவை",
         "privacy": "தனியுரிமையை கருத்தில் கொண்டு வடிவமைக்கப்பட்டுள்ளது.",
-        "warning":
+        "warning": (
             "இந்த கருவி மனநல நோயைக் கண்டறியாது மற்றும் "
-            "தொழில்முறை உதவிக்கு மாற்றாகாது.",
+            "தொழில்முறை உதவிக்கு மாற்றாகாது."
+        ),
         "next": "அடுத்து →",
         "back": "← பின்செல்",
         "complete": "எனது திட்டத்தைப் பார்க்க →",
         "download": "📥 எனது திட்டத்தை பதிவிறக்கு",
         "start": "மீண்டும் தொடங்கு",
-    }
+    },
 }
 
 text = T[st.session_state.language]
 
 
 # ============================================================
-# HELPLINES
+# SUPPORT CONTACTS
 # ============================================================
 
 helplines = [
@@ -263,14 +262,16 @@ with st.sidebar:
 
     st.markdown("## 🏮 RescuePlan")
 
-    st.caption("Personal Mental Health Safety Plan Assistant")
+    st.caption(
+        "Personal Mental Health Safety Plan Assistant"
+    )
 
     st.divider()
 
     language = st.radio(
         "Language / மொழி",
         ["English", "Tamil"],
-        index=0 if st.session_state.language == "English" else 1
+        index=0 if st.session_state.language == "English" else 1,
     )
 
     if language != st.session_state.language:
@@ -287,6 +288,7 @@ with st.sidebar:
     )
 
     for name, number, availability in helplines:
+
         st.markdown(
             f"**{name}**  \n"
             f"📞 `{number}`  \n"
@@ -305,7 +307,7 @@ with st.sidebar:
 
     st.progress(
         completed / len(sections),
-        text=f"Plan readiness: {completed}/{len(sections)}"
+        text=f"Plan readiness: {completed}/{len(sections)}",
     )
 
     st.caption(
@@ -325,7 +327,7 @@ if st.session_state.page == "home":
         f'<div class="hero-title">🏮 {text["tagline"]}</div>'
         f'<p class="hero-subtitle">{text["description"]}</p>'
         '</div>',
-        unsafe_allow_html=True
+        unsafe_allow_html=True,
     )
 
     st.write("")
@@ -354,11 +356,11 @@ if st.session_state.page == "home":
     st.write("")
 
     st.markdown(
-        '<div class="warning-box">'
-        '<strong>Important:</strong><br>'
-        + text["warning"] +
-        '</div>',
-        unsafe_allow_html=True
+        f'<div class="warning-box">'
+        f'<strong>Important:</strong><br>'
+        f'{text["warning"]}'
+        f'</div>',
+        unsafe_allow_html=True,
     )
 
     st.write("")
@@ -372,7 +374,7 @@ if st.session_state.page == "home":
         ),
         (
             "🔎 Personalized",
-            "Your own warning signs, coping strategies and support network become part of the plan."
+            "Your warning signs, coping strategies and support network become part of the plan."
         ),
         (
             "🆘 Safety-first",
@@ -387,16 +389,12 @@ if st.session_state.page == "home":
     for title, description in features:
 
         st.markdown(
-            f"""
-            <div class="feature-card">
-                <div class="feature-title">{title}</div>
-                <div class="feature-text">{description}</div>
-            </div>
-            """,
-            unsafe_allow_html=True
+            f'<div class="feature-card">'
+            f'<div class="feature-title">{title}</div>'
+            f'<div class="feature-text">{description}</div>'
+            f'</div>',
+            unsafe_allow_html=True,
         )
-
-    st.write("")
 
     st.caption(text["privacy"])
 
@@ -408,8 +406,8 @@ if st.session_state.page == "home":
 elif st.session_state.page == "help":
 
     st.markdown(
-        '<p class="hero-title">🆘 You don't have to handle everything alone.</p>',
-        unsafe_allow_html=True
+        "<p class='hero-title'>🆘 You don't have to handle everything alone.</p>",
+        unsafe_allow_html=True,
     )
 
     st.write(
@@ -423,7 +421,7 @@ elif st.session_state.page == "help":
         '<strong>🚨 Emergency</strong><br>'
         'India National Emergency Number: <strong>112</strong>'
         '</div>',
-        unsafe_allow_html=True
+        unsafe_allow_html=True,
     )
 
     st.write("")
@@ -449,36 +447,37 @@ elif st.session_state.page == "help":
         'If calling feels difficult, consider moving to a place where '
         'another trusted person is present.'
         '</div>',
-        unsafe_allow_html=True
+        unsafe_allow_html=True,
     )
 
     st.write("")
 
-    if st.button("← Back to RescuePlan", use_container_width=True):
+    if st.button(
+        "← Back to RescuePlan",
+        use_container_width=True
+    ):
         st.session_state.page = "home"
         st.rerun()
 
 
 # ============================================================
-# PLAN PAGE
+# SAFETY PLAN PAGE
 # ============================================================
 
 elif st.session_state.page == "plan":
 
     current_step = st.session_state.step
 
-    # --------------------------------------------------------
-    # HEADER
-    # --------------------------------------------------------
-
     st.markdown(
         '<div class="badge">YOUR PERSONAL PLAN</div>',
-        unsafe_allow_html=True
+        unsafe_allow_html=True,
     )
 
     st.markdown(
-        '<p class="hero-title">Build your plan, one step at a time.</p>',
-        unsafe_allow_html=True
+        '<p class="hero-title">'
+        'Build your plan, one step at a time.'
+        '</p>',
+        unsafe_allow_html=True,
     )
 
     st.caption(
@@ -513,7 +512,7 @@ elif st.session_state.page == "plan":
     st.write("")
 
     # --------------------------------------------------------
-    # COMPLETION
+    # CURRENT STEP
     # --------------------------------------------------------
 
     if current_step < len(sections):
@@ -521,17 +520,6 @@ elif st.session_state.page == "plan":
         section_title = sections[current_step]
 
         key = section_title.lower().replace(" ", "_")
-
-        st.markdown(
-            f'<div class="step-box">',
-            unsafe_allow_html=True
-        )
-
-        st.markdown(
-            f"### Step {current_step + 1} of {len(sections)}"
-        )
-
-        st.subheader(section_title)
 
         hints = {
 
@@ -551,48 +539,68 @@ elif st.session_state.page == "plan":
                 "Who could provide professional support — counselor, doctor, psychologist or helpline?",
 
             "safer_environment":
-                "What changes could make your surroundings safer when you're struggling?"
+                "What changes could make your surroundings safer when you're struggling?",
         }
-
-        st.caption(hints[key])
 
         examples = {
 
             "warning_signs":
-                "Example: I stop sleeping properly, become quiet, stop replying to messages.",
+                "I stop sleeping properly, become quiet, stop replying to messages.",
 
             "coping_strategies":
-                "Example: Walk outside, listen to music, write in a journal.",
+                "Walk outside, listen to music, write in a journal.",
 
             "supportive_people_places":
-                "Example: My cousin, college library, my favorite peaceful place.",
+                "My cousin, college library, my favorite peaceful place.",
 
             "people_to_ask_for_help":
-                "Example: Mom — call her. Best friend — message them.",
+                "Mom — call her. Best friend — message them.",
 
             "professional_contacts":
-                "Example: College counselor, family doctor, mental-health helpline.",
+                "College counselor, family doctor, mental-health helpline.",
 
             "safer_environment":
-                "Example: Stay near family, avoid being alone, move away from unsafe situations."
+                "Stay near family, avoid being alone, move away from unsafe situations.",
         }
 
-        st.caption("💡 " + examples[key])
+        st.markdown(
+            '<div class="step-box">',
+            unsafe_allow_html=True,
+        )
+
+        st.markdown(
+            f"### Step {current_step + 1} of {len(sections)}"
+        )
+
+        st.subheader(section_title)
+
+        st.caption(hints[key])
+
+        st.caption(
+            "💡 " + examples[key]
+        )
 
         user_input = st.text_area(
             "Your response",
             value=st.session_state[key],
             height=160,
             key=f"textarea_{key}",
-            label_visibility="collapsed"
+            label_visibility="collapsed",
+            placeholder=(
+                "Write anything that would be useful "
+                "to remember later..."
+            ),
         )
 
         st.session_state[key] = user_input
 
-        st.markdown("</div>", unsafe_allow_html=True)
+        st.markdown(
+            "</div>",
+            unsafe_allow_html=True,
+        )
 
         # ----------------------------------------------------
-        # SIMPLE PERSONALIZED FEEDBACK
+        # PERSONALIZED FEEDBACK
         # ----------------------------------------------------
 
         if user_input.strip():
@@ -609,7 +617,7 @@ elif st.session_state.page == "plan":
                         "sleep",
                         "cry",
                         "angry",
-                        "irritable"
+                        "irritable",
                     ]
                 ):
 
@@ -668,20 +676,22 @@ elif st.session_state.page == "plan":
                     st.session_state.step = len(sections)
                     st.rerun()
 
-    # --------------------------------------------------------
+    # ========================================================
     # FINAL PLAN
-    # --------------------------------------------------------
+    # ========================================================
 
     else:
 
         st.markdown(
             '<div class="badge">PLAN COMPLETE</div>',
-            unsafe_allow_html=True
+            unsafe_allow_html=True,
         )
 
         st.markdown(
-            '<p class="hero-title">Your plan is ready.</p>',
-            unsafe_allow_html=True
+            '<p class="hero-title">'
+            'Your plan is ready.'
+            '</p>',
+            unsafe_allow_html=True,
         )
 
         completed = sum(
@@ -697,18 +707,12 @@ elif st.session_state.page == "plan":
         # ----------------------------------------------------
 
         st.markdown(
-            f"""
-            <div class="readiness">
-                <div class="readiness-number">
-                    {completed}/6
-                </div>
-                <strong>Plan Readiness</strong>
-                <p>
-                    {completed} of 6 sections completed
-                </p>
-            </div>
-            """,
-            unsafe_allow_html=True
+            f'<div class="readiness">'
+            f'<div class="readiness-number">{completed}/6</div>'
+            f'<strong>Plan Readiness</strong>'
+            f'<p>{completed} of 6 sections completed</p>'
+            f'</div>',
+            unsafe_allow_html=True,
         )
 
         st.write("")
@@ -716,26 +720,26 @@ elif st.session_state.page == "plan":
         if completed == 6:
 
             st.success(
-                "🎉 Your safety plan is complete. Keep it somewhere "
-                "you can easily access when you need it."
+                "🎉 Your safety plan is complete. "
+                "Keep it somewhere you can easily access."
             )
 
         elif completed >= 4:
 
             st.info(
-                "Your plan is almost complete. Consider filling the "
-                "remaining sections to make it more useful."
+                "Your plan is almost complete. "
+                "Consider filling the remaining sections."
             )
 
         else:
 
             st.warning(
-                "Your plan has a good starting point. Adding more "
-                "sections can make it more practical."
+                "Your plan has a good starting point. "
+                "Adding more sections can make it more practical."
             )
 
         # ----------------------------------------------------
-        # PERSONALIZED PLAN
+        # PERSONAL PLAN
         # ----------------------------------------------------
 
         st.subheader("🔎 My Personal Safety Plan")
@@ -750,16 +754,24 @@ elif st.session_state.page == "plan":
 
                 if value:
 
-                    st.markdown(f"### ✓ {section}")
+                    st.markdown(
+                        f"### ✓ {section}"
+                    )
+
                     st.write(value)
 
                 else:
 
-                    st.markdown(f"### ○ {section}")
-                    st.caption("Not filled yet")
+                    st.markdown(
+                        f"### ○ {section}"
+                    )
+
+                    st.caption(
+                        "Not filled yet"
+                    )
 
         # ----------------------------------------------------
-        # SMART REMINDERS
+        # MISSING SECTIONS
         # ----------------------------------------------------
 
         missing = []
@@ -783,11 +795,15 @@ elif st.session_state.page == "plan":
                 )
 
         # ----------------------------------------------------
-        # DOWNLOAD PLAN
+        # DOWNLOADABLE PLAN
         # ----------------------------------------------------
 
         plan_text = "=" * 55 + "\n"
-        plan_text += "RESCUEPLAN — MY PERSONAL SAFETY PLAN\n"
+
+        plan_text += (
+            "RESCUEPLAN — MY PERSONAL SAFETY PLAN\n"
+        )
+
         plan_text += "=" * 55 + "\n\n"
 
         for section in sections:
@@ -797,27 +813,36 @@ elif st.session_state.page == "plan":
             value = st.session_state[key].strip()
 
             plan_text += section.upper() + "\n"
+
             plan_text += "-" * 30 + "\n"
 
             if value:
+
                 plan_text += value
+
             else:
+
                 plan_text += "(Not filled yet)"
 
             plan_text += "\n\n"
 
         plan_text += "=" * 55 + "\n"
-        plan_text += "INDIA SUPPORT & EMERGENCY CONTACTS\n"
+
+        plan_text += (
+            "INDIA SUPPORT & EMERGENCY CONTACTS\n"
+        )
+
         plan_text += "=" * 55 + "\n\n"
 
-        plan_text += "Tele-MANAS: 14416 (24/7)\n"
-        plan_text += "Tele-MANAS: 1800-89-14416 (24/7)\n"
-        plan_text += "Vandrevala Foundation: 9999666555 (24/7)\n"
-        plan_text += "iCALL: 9152987821 (Mon-Sat, 10 AM-8 PM)\n"
-        plan_text += "KIRAN: 1800-599-0019 (24/7)\n"
+        plan_text += "Tele-MANAS: 14416\n"
+        plan_text += "Tele-MANAS alternate: 1800-89-14416\n"
+        plan_text += "Vandrevala Foundation: 9999666555\n"
+        plan_text += "iCALL: 9152987821\n"
+        plan_text += "KIRAN: 1800-599-0019\n"
         plan_text += "Emergency: 112\n\n"
 
         plan_text += "-" * 55 + "\n"
+
         plan_text += (
             "This plan is a self-guided planning tool. "
             "It does not diagnose or replace professional care.\n"
@@ -828,10 +853,14 @@ elif st.session_state.page == "plan":
             data=plan_text,
             file_name="RescuePlan_My_Safety_Plan.txt",
             mime="text/plain",
-            use_container_width=True
+            use_container_width=True,
         )
 
         st.write("")
+
+        # ----------------------------------------------------
+        # START OVER
+        # ----------------------------------------------------
 
         if st.button(
             text["start"],
@@ -845,6 +874,7 @@ elif st.session_state.page == "plan":
                 st.session_state[key] = ""
 
             st.session_state.step = 0
+
             st.session_state.page = "home"
 
             st.rerun()
