@@ -1,197 +1,170 @@
 import streamlit as st
 
 # ============================================================
-# PAGE SETUP
+# RESCUEHACKS — PERSONAL MENTAL HEALTH SAFETY PLAN ASSISTANT
 # ============================================================
+
 st.set_page_config(
-    page_title="My Safety Plan",
+    page_title="RescuePlan",
     page_icon="🏮",
-    layout="centered"
+    layout="centered",
+    initial_sidebar_state="expanded"
 )
+
+# ============================================================
+# LANGUAGE
+# ============================================================
+
+if "language" not in st.session_state:
+    st.session_state.language = "English"
 
 # ============================================================
 # CUSTOM CSS
 # ============================================================
+
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap');
 
-    html, body, [class*="css"] {
-        font-family: 'Inter', sans-serif;
-    }
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap');
 
-    .stApp {
-        background-color: #F4F6F9;
-    }
+html, body, [class*="css"] {
+    font-family: 'Inter', sans-serif;
+}
 
-    h1, h2, h3 {
-        font-family: 'Fraunces', serif !important;
-        color: #1B2430 !important;
-        letter-spacing: -0.3px;
-    }
+.stApp {
+    background: #F4F6F9;
+}
 
-    .hero-title {
-        font-family: 'Fraunces', serif;
-        font-size: 2.4rem;
-        font-weight: 700;
-        color: #1B2430;
-        margin-bottom: 0.2rem;
-        line-height: 1.15;
-    }
+h1, h2, h3 {
+    font-family: 'Fraunces', serif !important;
+    color: #1B2430 !important;
+}
 
-    .hero-sub {
-        font-family: 'Inter', sans-serif;
-        color: #7C8A9A;
-        font-size: 1.02rem;
-        margin-top: 0;
-        margin-bottom: 1.6rem;
-    }
+.hero {
+    padding: 2rem 0 1rem 0;
+}
 
-    .stone-path {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin: 0.5rem 0 2rem 0;
-    }
+.hero-title {
+    font-family: 'Fraunces', serif;
+    font-size: 3rem;
+    font-weight: 700;
+    color: #1B2430;
+    line-height: 1.05;
+    margin-bottom: 0.5rem;
+}
 
-    .stone {
-        width: 34px;
-        height: 34px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 0.75rem;
-        font-weight: 600;
-        font-family: 'Inter', sans-serif;
-        flex-shrink: 0;
-        border: 2px solid #D8DEE6;
-        background: #FFFFFF;
-        color: #A7B1BD;
-    }
+.hero-subtitle {
+    color: #6E7B89;
+    font-size: 1.08rem;
+    line-height: 1.6;
+}
 
-    .stone.lit {
-        background: #E8A33D;
-        border-color: #E8A33D;
-        color: #1B2430;
-        box-shadow: 0 0 0 4px rgba(232, 163, 61, 0.18);
-    }
+.badge {
+    display: inline-block;
+    padding: 0.35rem 0.8rem;
+    border-radius: 20px;
+    background: #FFF2D9;
+    color: #9A6415;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
 
-    .stone.current {
-        border-color: #1B2430;
-        color: #1B2430;
-    }
+.feature-card {
+    background: white;
+    padding: 1.2rem;
+    border-radius: 15px;
+    border: 1px solid #E1E6EC;
+    margin-bottom: 0.7rem;
+}
 
-    .stone-line {
-        flex: 1;
-        height: 2px;
-        background: #D8DEE6;
-        margin: 0 4px;
-    }
+.feature-title {
+    font-weight: 700;
+    color: #1B2430;
+    margin-bottom: 0.3rem;
+}
 
-    .step-eyebrow {
-        font-family: 'Inter', sans-serif;
-        font-size: 0.78rem;
-        font-weight: 600;
-        letter-spacing: 1.2px;
-        text-transform: uppercase;
-        color: #E8A33D;
-        margin-bottom: 0.3rem;
-    }
+.feature-text {
+    color: #718092;
+    font-size: 0.9rem;
+}
 
-    .stTextArea textarea {
-        border-radius: 12px;
-        border: 1.5px solid #D8DEE6;
-        background-color: #FFFFFF;
-        font-size: 15px;
-        font-family: 'Inter', sans-serif;
-        padding: 0.9rem;
-    }
+.stButton button {
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 0.65rem 1.2rem;
+}
 
-    .stTextArea textarea:focus {
-        border-color: #E8A33D;
-        box-shadow: 0 0 0 2px rgba(232, 163, 61, 0.15);
-    }
+.stTextArea textarea {
+    border-radius: 12px;
+    border: 1.5px solid #D8DEE6;
+    background: white;
+}
 
-    .stButton button {
-        border-radius: 8px;
-        font-weight: 600;
-        font-family: 'Inter', sans-serif;
-        padding: 0.55rem 1.3rem;
-        border: none;
-        transition: all 0.15s ease;
-    }
+.stTextArea textarea:focus {
+    border-color: #E8A33D;
+}
 
-    div[data-testid="column"]:nth-of-type(2) .stButton button {
-        background-color: #1B2430;
-        color: #F4F6F9;
-    }
+section[data-testid="stSidebar"] {
+    background: #1B2430;
+}
 
-    div[data-testid="column"]:nth-of-type(2) .stButton button:hover {
-        background-color: #E8A33D;
-        color: #1B2430;
-    }
+section[data-testid="stSidebar"] * {
+    color: #E7EBF0 !important;
+}
 
-    div[data-testid="column"]:nth-of-type(1) .stButton button {
-        background-color: transparent;
-        color: #7C8A9A;
-        border: 1.5px solid #D8DEE6;
-    }
+section[data-testid="stSidebar"] h2 {
+    color: #E8A33D !important;
+    font-family: 'Fraunces', serif !important;
+}
 
-    .stDownloadButton button {
-        background-color: #6E9B87;
-        color: white;
-        border-radius: 8px;
-        font-weight: 600;
-        font-family: 'Inter', sans-serif;
-        padding: 0.65rem 1.5rem;
-        border: none;
-    }
+.stProgress > div > div {
+    background: #E8A33D;
+}
 
-    .stDownloadButton button:hover {
-        background-color: #5A8571;
-        color: white;
-    }
+.step-box {
+    background: white;
+    padding: 1.4rem;
+    border-radius: 15px;
+    border: 1px solid #E1E6EC;
+}
 
-    section[data-testid="stSidebar"] {
-        background-color: #1B2430;
-    }
+.readiness {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 15px;
+    border: 1px solid #E1E6EC;
+    text-align: center;
+}
 
-    section[data-testid="stSidebar"] * {
-        color: #E7EBF0 !important;
-        font-family: 'Inter', sans-serif;
-    }
+.readiness-number {
+    font-family: 'Fraunces', serif;
+    font-size: 3rem;
+    font-weight: 700;
+    color: #1B2430;
+}
 
-    section[data-testid="stSidebar"] h2 {
-        font-family: 'Fraunces', serif !important;
-        color: #E8A33D !important;
-    }
+.warning-box {
+    background: #FFF7E8;
+    border-left: 5px solid #E8A33D;
+    padding: 1rem;
+    border-radius: 8px;
+}
 
-    section[data-testid="stSidebar"] hr {
-        border-color: #34435A;
-    }
+.safe-box {
+    background: #EDF7F1;
+    border-left: 5px solid #6E9B87;
+    padding: 1rem;
+    border-radius: 8px;
+}
 
-    section[data-testid="stSidebar"] code {
-        background-color: #2A3646;
-        color: #E8A33D !important;
-        padding: 1px 6px;
-        border-radius: 4px;
-    }
+.emergency-box {
+    background: #FFF0F0;
+    border-left: 5px solid #C94C4C;
+    padding: 1rem;
+    border-radius: 8px;
+}
 
-    .stProgress > div > div {
-        background-color: #E8A33D;
-    }
-
-    div[data-testid="stVerticalBlockBorderWrapper"] {
-        border-radius: 12px !important;
-        border-color: #E3E7EC !important;
-        background: #FFFFFF;
-    }
-
-    .stAlert {
-        border-radius: 10px;
-        font-family: 'Inter', sans-serif;
-    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -199,6 +172,10 @@ st.markdown("""
 # ============================================================
 # SESSION STATE
 # ============================================================
+
+if "page" not in st.session_state:
+    st.session_state.page = "home"
+
 if "step" not in st.session_state:
     st.session_state.step = 0
 
@@ -211,346 +188,663 @@ sections = [
     "Safer Environment"
 ]
 
-for sec in sections:
-    key = sec.lower().replace(" ", "_")
+for section in sections:
+    key = section.lower().replace(" ", "_")
 
     if key not in st.session_state:
         st.session_state[key] = ""
 
 
 # ============================================================
-# HELPLINE INFORMATION
+# TRANSLATIONS
 # ============================================================
+
+T = {
+    "English": {
+        "app": "RescuePlan",
+        "tagline": "A lantern for hard nights.",
+        "description":
+            "Build a personal safety plan while things are calm, "
+            "so you know what to do when things become difficult.",
+        "build": "🌿 Build My Safety Plan",
+        "help": "🆘 I Need Help Now",
+        "privacy": "Designed with privacy in mind. No account is required.",
+        "warning": "This tool does not diagnose mental-health conditions "
+                   "or replace professional care.",
+        "next": "Next →",
+        "back": "← Back",
+        "complete": "View My Plan →",
+        "download": "📥 Download My Plan",
+        "start": "Start Over",
+    },
+
+    "Tamil": {
+        "app": "RescuePlan",
+        "tagline": "கடினமான நேரங்களுக்கான ஒரு விளக்கு.",
+        "description":
+            "நீங்கள் அமைதியாக இருக்கும் நேரத்தில் உங்கள் தனிப்பட்ட "
+            "பாதுகாப்புத் திட்டத்தை உருவாக்குங்கள்.",
+        "build": "🌿 எனது பாதுகாப்புத் திட்டத்தை உருவாக்கு",
+        "help": "🆘 எனக்கு இப்போது உதவி தேவை",
+        "privacy": "தனியுரிமையை கருத்தில் கொண்டு வடிவமைக்கப்பட்டுள்ளது.",
+        "warning":
+            "இந்த கருவி மனநல நோயைக் கண்டறியாது மற்றும் "
+            "தொழில்முறை உதவிக்கு மாற்றாகாது.",
+        "next": "அடுத்து →",
+        "back": "← பின்செல்",
+        "complete": "எனது திட்டத்தைப் பார்க்க →",
+        "download": "📥 எனது திட்டத்தை பதிவிறக்கு",
+        "start": "மீண்டும் தொடங்கு",
+    }
+}
+
+text = T[st.session_state.language]
+
+
+# ============================================================
+# HELPLINES
+# ============================================================
+
 helplines = [
-    ("Tele-MANAS", "14416", "24/7", "Government of India"),
-    ("Vandrevala Foundation", "9999666555", "24/7", "Free mental-health support"),
-    ("iCALL", "9152987821", "Mon–Sat, 10 AM–8 PM", "TISS psychosocial helpline"),
-    ("KIRAN", "1800-599-0019", "24/7", "Government mental-health helpline"),
-    ("Emergency", "112", "Emergency services", "National emergency number"),
+    ("Tele-MANAS", "14416", "24/7"),
+    ("Tele-MANAS", "1800-89-14416", "24/7"),
+    ("Vandrevala Foundation", "9999666555", "24/7"),
+    ("iCALL", "9152987821", "Mon–Sat, 10 AM–8 PM"),
+    ("KIRAN", "1800-599-0019", "24/7"),
+    ("Emergency", "112", "Emergency services"),
 ]
 
 
 # ============================================================
 # SIDEBAR
 # ============================================================
+
 with st.sidebar:
 
-    st.markdown("## 🏮 Immediate Help")
+    st.markdown("## 🏮 RescuePlan")
 
-    st.warning(
-        "If you are in immediate danger or think you may hurt yourself, "
-        "contact emergency services or a trusted person now."
+    st.caption("Personal Mental Health Safety Plan Assistant")
+
+    st.divider()
+
+    language = st.radio(
+        "Language / மொழி",
+        ["English", "Tamil"],
+        index=0 if st.session_state.language == "English" else 1
     )
 
-    st.markdown("### 🇮🇳 India Support")
+    if language != st.session_state.language:
+        st.session_state.language = language
+        st.rerun()
 
-    for name, number, availability, description in helplines:
+    st.divider()
+
+    st.markdown("## 🆘 Immediate Help")
+
+    st.warning(
+        "If you are in immediate danger, contact emergency services "
+        "or reach a trusted person now."
+    )
+
+    for name, number, availability in helplines:
         st.markdown(
-            f"""
-            **{name}**  
-            📞 `{number}`  
-            _{availability}_  
-            """
+            f"**{name}**  \n"
+            f"📞 `{number}`  \n"
+            f"_{availability}_"
         )
 
     st.divider()
 
-    st.markdown("### 📊 Your Progress")
-
-    total = len(sections)
-
-    done = sum(
+    completed = sum(
         1
-        for sec in sections
+        for section in sections
         if st.session_state[
-            sec.lower().replace(" ", "_")
-        ].strip() != ""
+            section.lower().replace(" ", "_")
+        ].strip()
     )
-
-    progress = done / total
 
     st.progress(
-        progress,
-        text=f"Plan progress: {done}/{total}"
-    )
-
-    st.divider()
-
-    st.markdown("### 🔒 Privacy")
-
-    st.caption(
-        "Your responses are kept in the current app session and are not "
-        "saved by this app as a personal account or profile. The download "
-        "creates a text file containing the plan you entered."
+        completed / len(sections),
+        text=f"Plan readiness: {completed}/{len(sections)}"
     )
 
     st.caption(
-        "For maximum privacy, avoid entering passwords, financial details, "
-        "or other unnecessary sensitive information."
+        "The app does not diagnose or replace professional mental-health care."
     )
 
 
 # ============================================================
-# HERO HEADER
+# HOME PAGE
 # ============================================================
-st.markdown(
-    '<p class="hero-title">🏮 A lantern for hard nights</p>',
-    unsafe_allow_html=True
-)
 
-st.markdown(
-    '<p class="hero-sub">'
-    'Build your plan now, in the calm — so it\'s ready to guide you later. '
-    'Take your time.'
-    '</p>',
-    unsafe_allow_html=True
-)
-
-
-# ============================================================
-# STEPPING-STONE PATH
-# ============================================================
-current_step = st.session_state.step
-
-stone_html = '<div class="stone-path">'
-
-for i in range(len(sections)):
-
-    key = sections[i].lower().replace(" ", "_")
-
-    filled = st.session_state[key].strip() != ""
-
-    cls = "stone"
-
-    if filled:
-        cls += " lit"
-
-    elif i == current_step:
-        cls += " current"
-
-    stone_html += f'<div class="{cls}">{i + 1}</div>'
-
-    if i < len(sections) - 1:
-        stone_html += '<div class="stone-line"></div>'
-
-stone_html += '</div>'
-
-st.markdown(
-    stone_html,
-    unsafe_allow_html=True
-)
-
-
-# ============================================================
-# NAVIGATION FUNCTIONS
-# ============================================================
-def go_to_next():
-    if st.session_state.step < len(sections):
-        st.session_state.step += 1
-
-
-def go_to_prev():
-    if st.session_state.step > 0:
-        st.session_state.step -= 1
-
-
-# ============================================================
-# SECTION HINTS
-# ============================================================
-hints = {
-    "warning_signs":
-        "Examples: I can't sleep, I feel irritable, I isolate myself.",
-
-    "coping_strategies":
-        "Examples: Take slow breaths, listen to calming music, go for a walk.",
-
-    "supportive_people_places":
-        "Examples: My favorite cafe, my pet, a quiet place, a nature trail.",
-
-    "people_to_ask_for_help":
-        "Examples: Mom — call her, friend — message them, trusted teacher.",
-
-    "professional_contacts":
-        "Examples: College counselor, family doctor, psychologist.",
-
-    "safer_environment":
-        "Examples: Stay with someone I trust, move away from unsafe situations."
-}
-
-
-# ============================================================
-# MAIN STEP VIEW
-# ============================================================
-if current_step < len(sections):
-
-    section_title = sections[current_step]
-
-    key = section_title.lower().replace(" ", "_")
+if st.session_state.page == "home":
 
     st.markdown(
-        f'<p class="step-eyebrow">'
-        f'Step {current_step + 1} of {len(sections)}'
-        f'</p>',
+        '<div class="hero">'
+        '<div class="badge">RESCUEHACKS 2026 • MENTAL HEALTH SUPPORT</div>'
+        f'<div class="hero-title">🏮 {text["tagline"]}</div>'
+        f'<p class="hero-subtitle">{text["description"]}</p>'
+        '</div>',
         unsafe_allow_html=True
     )
 
-    st.subheader(section_title)
-
-    st.caption(hints.get(key, ""))
-
-    user_input = st.text_area(
-        "Write your thoughts here:",
-        value=st.session_state[key],
-        height=150,
-        key=f"input_{key}",
-        label_visibility="collapsed",
-        placeholder="Write anything that would be useful to remember later..."
-    )
-
-    st.session_state[key] = user_input
-
     st.write("")
 
-    col1, col2, col3 = st.columns([1, 1, 4])
+    col1, col2 = st.columns(2)
 
     with col1:
 
-        if current_step > 0:
-            st.button(
-                "← Back",
-                on_click=go_to_prev
-            )
+        if st.button(
+            text["build"],
+            use_container_width=True
+        ):
+            st.session_state.page = "plan"
+            st.session_state.step = 0
+            st.rerun()
 
     with col2:
 
-        if current_step < len(sections) - 1:
+        if st.button(
+            text["help"],
+            use_container_width=True
+        ):
+            st.session_state.page = "help"
+            st.rerun()
 
-            st.button(
-                "Next →",
-                on_click=go_to_next
-            )
-
-        else:
-
-            st.button(
-                "View my plan →",
-                on_click=go_to_next
-            )
-
-else:
-
-    # ========================================================
-    # COMPLETED PLAN
-    # ========================================================
+    st.write("")
 
     st.markdown(
-        '<p class="step-eyebrow">Complete</p>',
+        '<div class="warning-box">'
+        '<strong>Important:</strong><br>'
+        + text["warning"] +
+        '</div>',
         unsafe_allow_html=True
     )
 
-    st.header("Your plan is ready")
+    st.write("")
 
-    st.success(
-        "You now have a plan you can refer to when things feel difficult."
+    st.subheader("Why RescuePlan?")
+
+    features = [
+        (
+            "🧭 Guided",
+            "Six simple steps help you prepare a plan without overwhelming you."
+        ),
+        (
+            "🔎 Personalized",
+            "Your own warning signs, coping strategies and support network become part of the plan."
+        ),
+        (
+            "🆘 Safety-first",
+            "Immediate support information stays accessible while you use the app."
+        ),
+        (
+            "🔒 Privacy-minded",
+            "No account or personal profile is required to create a plan."
+        ),
+    ]
+
+    for title, description in features:
+
+        st.markdown(
+            f"""
+            <div class="feature-card">
+                <div class="feature-title">{title}</div>
+                <div class="feature-text">{description}</div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+    st.write("")
+
+    st.caption(text["privacy"])
+
+
+# ============================================================
+# IMMEDIATE HELP PAGE
+# ============================================================
+
+elif st.session_state.page == "help":
+
+    st.markdown(
+        '<p class="hero-title">🆘 You don't have to handle everything alone.</p>',
+        unsafe_allow_html=True
     )
 
-    st.info(
-        "This tool is for planning and support. It does not diagnose "
-        "mental-health conditions or replace professional care."
+    st.write(
+        "If you are in immediate danger or believe you may hurt yourself, "
+        "please seek immediate help from emergency services, a trusted person, "
+        "or a qualified mental-health professional."
     )
 
-    # --------------------------------------------------------
-    # BUILD DOWNLOADABLE PLAN
-    # --------------------------------------------------------
-
-    plan_text = "=" * 50 + "\n"
-    plan_text += "MY PERSONAL SAFETY PLAN\n"
-    plan_text += "=" * 50 + "\n\n"
-
-    for sec in sections:
-
-        key = sec.lower().replace(" ", "_")
-
-        val = st.session_state[key].strip()
-
-        plan_text += f"{sec.upper()}:\n"
-
-        if val:
-            plan_text += val
-        else:
-            plan_text += "(Not filled yet)"
-
-        plan_text += "\n\n"
-
-    plan_text += "=" * 50 + "\n"
-    plan_text += "INDIA SUPPORT & EMERGENCY CONTACTS\n"
-    plan_text += "=" * 50 + "\n\n"
-
-    plan_text += "Tele-MANAS: 14416 (24/7)\n"
-    plan_text += "Tele-MANAS alternate: 1800-89-14416\n"
-    plan_text += "Vandrevala Foundation: 9999666555 (24/7)\n"
-    plan_text += "iCALL: 9152987821 (Mon-Sat, 10 AM-8 PM)\n"
-    plan_text += "KIRAN: 1800-599-0019 (24/7)\n"
-    plan_text += "Emergency: 112\n"
-
-    plan_text += "\n"
-    plan_text += "-" * 50 + "\n"
-    plan_text += (
-        "If you are in immediate danger, contact emergency services "
-        "or seek help from a trusted person or professional.\n"
+    st.markdown(
+        '<div class="emergency-box">'
+        '<strong>🚨 Emergency</strong><br>'
+        'India National Emergency Number: <strong>112</strong>'
+        '</div>',
+        unsafe_allow_html=True
     )
 
-    # --------------------------------------------------------
-    # DISPLAY PLAN
-    # --------------------------------------------------------
+    st.write("")
 
-    for sec in sections:
+    st.subheader("🇮🇳 Mental Health Support")
 
-        key = sec.lower().replace(" ", "_")
-
-        val = st.session_state[key].strip()
+    for name, number, availability in helplines:
 
         with st.container(border=True):
 
-            st.markdown(f"**{sec}**")
+            st.markdown(f"### {name}")
 
-            if val:
-                st.write(val)
-            else:
-                st.caption("Not filled yet")
-
-    # --------------------------------------------------------
-    # DOWNLOAD
-    # --------------------------------------------------------
+            st.markdown(
+                f"📞 **{number}**  \n"
+                f"Availability: **{availability}**"
+            )
 
     st.write("")
 
-    st.download_button(
-        label="📥 Download my plan (.txt)",
-        data=plan_text,
-        file_name="my_safety_plan.txt",
-        mime="text/plain"
+    st.markdown(
+        '<div class="safe-box">'
+        '<strong>One small step:</strong><br>'
+        'If calling feels difficult, consider moving to a place where '
+        'another trusted person is present.'
+        '</div>',
+        unsafe_allow_html=True
+    )
+
+    st.write("")
+
+    if st.button("← Back to RescuePlan", use_container_width=True):
+        st.session_state.page = "home"
+        st.rerun()
+
+
+# ============================================================
+# PLAN PAGE
+# ============================================================
+
+elif st.session_state.page == "plan":
+
+    current_step = st.session_state.step
+
+    # --------------------------------------------------------
+    # HEADER
+    # --------------------------------------------------------
+
+    st.markdown(
+        '<div class="badge">YOUR PERSONAL PLAN</div>',
+        unsafe_allow_html=True
+    )
+
+    st.markdown(
+        '<p class="hero-title">Build your plan, one step at a time.</p>',
+        unsafe_allow_html=True
     )
 
     st.caption(
-        "The downloaded file is created from the information you entered "
-        "in this session. Store it somewhere private and accessible to you."
+        "There is no perfect answer. Write what would genuinely help you."
     )
 
     # --------------------------------------------------------
-    # START OVER
+    # STEP INDICATOR
     # --------------------------------------------------------
+
+    cols = st.columns(6)
+
+    for i, section in enumerate(sections):
+
+        key = section.lower().replace(" ", "_")
+
+        filled = bool(
+            st.session_state[key].strip()
+        )
+
+        with cols[i]:
+
+            if filled:
+                st.success(f"✓ {i + 1}")
+
+            elif i == current_step:
+                st.info(f"● {i + 1}")
+
+            else:
+                st.caption(f"○ {i + 1}")
 
     st.write("")
 
-    if st.button("↻ Start over"):
+    # --------------------------------------------------------
+    # COMPLETION
+    # --------------------------------------------------------
 
-        for sec in sections:
+    if current_step < len(sections):
 
-            key = sec.lower().replace(" ", "_")
+        section_title = sections[current_step]
 
-            st.session_state[key] = ""
+        key = section_title.lower().replace(" ", "_")
 
-        st.session_state.step = 0
+        st.markdown(
+            f'<div class="step-box">',
+            unsafe_allow_html=True
+        )
 
-        st.rerun()
+        st.markdown(
+            f"### Step {current_step + 1} of {len(sections)}"
+        )
+
+        st.subheader(section_title)
+
+        hints = {
+
+            "warning_signs":
+                "What changes do you notice when things begin becoming difficult?",
+
+            "coping_strategies":
+                "What can you do by yourself that usually helps you feel calmer?",
+
+            "supportive_people_places":
+                "What people, places or activities make you feel comfortable or distracted?",
+
+            "people_to_ask_for_help":
+                "Who could you contact when you need someone to know what you're going through?",
+
+            "professional_contacts":
+                "Who could provide professional support — counselor, doctor, psychologist or helpline?",
+
+            "safer_environment":
+                "What changes could make your surroundings safer when you're struggling?"
+        }
+
+        st.caption(hints[key])
+
+        examples = {
+
+            "warning_signs":
+                "Example: I stop sleeping properly, become quiet, stop replying to messages.",
+
+            "coping_strategies":
+                "Example: Walk outside, listen to music, write in a journal.",
+
+            "supportive_people_places":
+                "Example: My cousin, college library, my favorite peaceful place.",
+
+            "people_to_ask_for_help":
+                "Example: Mom — call her. Best friend — message them.",
+
+            "professional_contacts":
+                "Example: College counselor, family doctor, mental-health helpline.",
+
+            "safer_environment":
+                "Example: Stay near family, avoid being alone, move away from unsafe situations."
+        }
+
+        st.caption("💡 " + examples[key])
+
+        user_input = st.text_area(
+            "Your response",
+            value=st.session_state[key],
+            height=160,
+            key=f"textarea_{key}",
+            label_visibility="collapsed"
+        )
+
+        st.session_state[key] = user_input
+
+        st.markdown("</div>", unsafe_allow_html=True)
+
+        # ----------------------------------------------------
+        # SIMPLE PERSONALIZED FEEDBACK
+        # ----------------------------------------------------
+
+        if user_input.strip():
+
+            lower = user_input.lower()
+
+            if key == "warning_signs":
+
+                if any(
+                    word in lower
+                    for word in [
+                        "alone",
+                        "isolate",
+                        "sleep",
+                        "cry",
+                        "angry",
+                        "irritable"
+                    ]
+                ):
+
+                    st.info(
+                        "💡 You identified an early change. "
+                        "Consider choosing one trusted person who could "
+                        "notice this pattern and support you."
+                    )
+
+            elif key == "coping_strategies":
+
+                if len(user_input.strip()) > 10:
+
+                    st.success(
+                        "🌿 Good start. You now have at least one action "
+                        "you can try before things become overwhelming."
+                    )
+
+            elif key == "people_to_ask_for_help":
+
+                st.info(
+                    "🤝 Having a specific person and a specific way to "
+                    "contact them can make asking for help easier."
+                )
+
+        st.write("")
+
+        # ----------------------------------------------------
+        # NAVIGATION
+        # ----------------------------------------------------
+
+        col1, col2, col3 = st.columns([1, 1, 4])
+
+        with col1:
+
+            if current_step > 0:
+
+                if st.button(text["back"]):
+
+                    st.session_state.step -= 1
+                    st.rerun()
+
+        with col2:
+
+            if current_step < len(sections) - 1:
+
+                if st.button(text["next"]):
+
+                    st.session_state.step += 1
+                    st.rerun()
+
+            else:
+
+                if st.button(text["complete"]):
+
+                    st.session_state.step = len(sections)
+                    st.rerun()
+
+    # --------------------------------------------------------
+    # FINAL PLAN
+    # --------------------------------------------------------
+
+    else:
+
+        st.markdown(
+            '<div class="badge">PLAN COMPLETE</div>',
+            unsafe_allow_html=True
+        )
+
+        st.markdown(
+            '<p class="hero-title">Your plan is ready.</p>',
+            unsafe_allow_html=True
+        )
+
+        completed = sum(
+            1
+            for section in sections
+            if st.session_state[
+                section.lower().replace(" ", "_")
+            ].strip()
+        )
+
+        # ----------------------------------------------------
+        # READINESS
+        # ----------------------------------------------------
+
+        st.markdown(
+            f"""
+            <div class="readiness">
+                <div class="readiness-number">
+                    {completed}/6
+                </div>
+                <strong>Plan Readiness</strong>
+                <p>
+                    {completed} of 6 sections completed
+                </p>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+        st.write("")
+
+        if completed == 6:
+
+            st.success(
+                "🎉 Your safety plan is complete. Keep it somewhere "
+                "you can easily access when you need it."
+            )
+
+        elif completed >= 4:
+
+            st.info(
+                "Your plan is almost complete. Consider filling the "
+                "remaining sections to make it more useful."
+            )
+
+        else:
+
+            st.warning(
+                "Your plan has a good starting point. Adding more "
+                "sections can make it more practical."
+            )
+
+        # ----------------------------------------------------
+        # PERSONALIZED PLAN
+        # ----------------------------------------------------
+
+        st.subheader("🔎 My Personal Safety Plan")
+
+        for section in sections:
+
+            key = section.lower().replace(" ", "_")
+
+            value = st.session_state[key].strip()
+
+            with st.container(border=True):
+
+                if value:
+
+                    st.markdown(f"### ✓ {section}")
+                    st.write(value)
+
+                else:
+
+                    st.markdown(f"### ○ {section}")
+                    st.caption("Not filled yet")
+
+        # ----------------------------------------------------
+        # SMART REMINDERS
+        # ----------------------------------------------------
+
+        missing = []
+
+        for section in sections:
+
+            key = section.lower().replace(" ", "_")
+
+            if not st.session_state[key].strip():
+
+                missing.append(section)
+
+        if missing:
+
+            st.subheader("💡 Before you finish")
+
+            for item in missing:
+
+                st.markdown(
+                    f"- Consider adding something for **{item}**."
+                )
+
+        # ----------------------------------------------------
+        # DOWNLOAD PLAN
+        # ----------------------------------------------------
+
+        plan_text = "=" * 55 + "\n"
+        plan_text += "RESCUEPLAN — MY PERSONAL SAFETY PLAN\n"
+        plan_text += "=" * 55 + "\n\n"
+
+        for section in sections:
+
+            key = section.lower().replace(" ", "_")
+
+            value = st.session_state[key].strip()
+
+            plan_text += section.upper() + "\n"
+            plan_text += "-" * 30 + "\n"
+
+            if value:
+                plan_text += value
+            else:
+                plan_text += "(Not filled yet)"
+
+            plan_text += "\n\n"
+
+        plan_text += "=" * 55 + "\n"
+        plan_text += "INDIA SUPPORT & EMERGENCY CONTACTS\n"
+        plan_text += "=" * 55 + "\n\n"
+
+        plan_text += "Tele-MANAS: 14416 (24/7)\n"
+        plan_text += "Tele-MANAS: 1800-89-14416 (24/7)\n"
+        plan_text += "Vandrevala Foundation: 9999666555 (24/7)\n"
+        plan_text += "iCALL: 9152987821 (Mon-Sat, 10 AM-8 PM)\n"
+        plan_text += "KIRAN: 1800-599-0019 (24/7)\n"
+        plan_text += "Emergency: 112\n\n"
+
+        plan_text += "-" * 55 + "\n"
+        plan_text += (
+            "This plan is a self-guided planning tool. "
+            "It does not diagnose or replace professional care.\n"
+        )
+
+        st.download_button(
+            label=text["download"],
+            data=plan_text,
+            file_name="RescuePlan_My_Safety_Plan.txt",
+            mime="text/plain",
+            use_container_width=True
+        )
+
+        st.write("")
+
+        if st.button(
+            text["start"],
+            use_container_width=True
+        ):
+
+            for section in sections:
+
+                key = section.lower().replace(" ", "_")
+
+                st.session_state[key] = ""
+
+            st.session_state.step = 0
+            st.session_state.page = "home"
+
+            st.rerun()
