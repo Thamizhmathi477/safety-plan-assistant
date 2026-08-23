@@ -596,6 +596,41 @@ if st.session_state.page == "home":
 
     st.caption(text["why_chart_label"])
 
+    with st.expander("🔬 How this app uses AI" if st.session_state.language == "English" else "🔬 இந்த ஆப் AI-ஐ எப்படி பயன்படுத்துகிறது"):
+
+        if st.session_state.language == "English":
+
+            st.markdown(
+                "We trained three models (Logistic Regression, Random Forest, "
+                "XGBoost) on the dataset above. Logistic Regression performed "
+                "best at **91.8% AUC** and **84.6% accuracy**.\n\n"
+                "We use this model's findings to explain *why* this app exists "
+                "and what factors matter most — shown in the chart above. "
+                "We deliberately do **not** use it to score individual users. "
+                "A model that's ~92% accurate on average can still be badly "
+                "wrong for one specific person, and a wrong 'Low Risk' label "
+                "after someone discloses suicidal thoughts could be dangerous. "
+                "So the AI informs the app's design, but never labels a person."
+            )
+
+        else:
+
+            st.markdown(
+                "மேலே உள்ள தரவுத்தொகுப்பில் மூன்று மாதிரிகளை (Logistic "
+                "Regression, Random Forest, XGBoost) பயிற்றுவித்தோம். "
+                "Logistic Regression **91.8% AUC** மற்றும் **84.6% துல்லியத்துடன்** "
+                "சிறப்பாக செயல்பட்டது.\n\n"
+                "இந்த மாதிரியின் கண்டுபிடிப்புகளை இந்த ஆப் ஏன் இருக்கிறது மற்றும் "
+                "எந்த காரணிகள் மிக முக்கியம் என்பதை விளக்க பயன்படுத்துகிறோம் — "
+                "மேலே உள்ள விளக்கப்படத்தில் காட்டப்பட்டுள்ளது. தனிநபர்களுக்கு "
+                "மதிப்பெண் அளிக்க இதை வேண்டுமென்றே பயன்படுத்தவில்லை. சராசரியாக "
+                "~92% துல்லியம் கொண்ட ஒரு மாதிரி கூட ஒரு குறிப்பிட்ட நபருக்கு "
+                "தவறாக இருக்கலாம், மேலும் ஒருவர் தற்கொலை எண்ணங்களை பகிர்ந்த "
+                "பிறகு தவறான 'குறைந்த இடர்' லேபிள் ஆபத்தானதாக இருக்கலாம். "
+                "எனவே AI ஆப்பின் வடிவமைப்பிற்கு தகவல் அளிக்கிறது, ஆனால் ஒருபோதும் "
+                "ஒரு நபரை லேபிள் செய்யாது."
+            )
+
     st.write("")
 
     st.subheader("Why RescuePlan?")
@@ -789,6 +824,10 @@ elif st.session_state.page == "checkin":
 
             st.subheader("A few gentle reflections")
 
+            # Reflections ordered by our model's real feature importance
+            # ranking (Academic Pressure > Financial Stress > Study Satisfaction),
+            # so the most predictive factor for this person surfaces first.
+
             notes = []
 
             if academic_pressure >= 4:
@@ -796,13 +835,6 @@ elif st.session_state.page == "checkin":
                     "Academic pressure sounds heavy right now — maybe exams or "
                     "placements. It might help to talk to a professor, mentor, "
                     "or your class advisor about how you're managing your workload."
-                )
-
-            if sleep in ["Less than 5 hours", "5-6 hours"]:
-                notes.append(
-                    "Your sleep has been on the shorter side lately. It's easy to "
-                    "let this slide during exam season, but it genuinely affects "
-                    "how manageable everything else feels."
                 )
 
             if financial_stress >= 4:
@@ -817,6 +849,13 @@ elif st.session_state.page == "checkin":
                     "It sounds like studying hasn't felt rewarding lately — not "
                     "just difficult, but disconnected. That's worth mentioning to "
                     "someone you trust, not just pushing through on your own."
+                )
+
+            if sleep in ["Less than 5 hours", "5-6 hours"]:
+                notes.append(
+                    "Your sleep has been on the shorter side lately. It's easy to "
+                    "let this slide during exam season, but it genuinely affects "
+                    "how manageable everything else feels."
                 )
 
             if notes:
