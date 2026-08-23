@@ -1,75 +1,61 @@
-# 🏮 RescuePlan
-
-**A lantern for hard nights.**
-
-RescuePlan is a bilingual (English/Tamil), privacy-minded personal safety planning
-assistant for students, built for **RescueHacks 2026** under the **Mental Health
-Support** track.
-
-## The Problem
-
-We trained a machine learning model on a public dataset of 27,901 Indian students
-and achieved 91.8% AUC in identifying depression risk factors. The strongest
-predictors were prior suicidal thoughts, academic pressure, CGPA-related stress,
-age, and financial stress. Academic and financial stress are not background noise
-for students — they are strongly linked to real mental health outcomes.
-
-Most students never prepare a plan for hard moments *before* they happen — they
-try to figure it out in the moment, when it's hardest to think clearly.
-
-## The Solution
-
-RescuePlan guides a student through building a personal safety plan **while things
-are calm**, based on the **Stanley-Brown Safety Planning Intervention** — the same
-evidence-based framework used by crisis clinicians. In six short steps, a student
-identifies:
-
-1. Warning signs
-2. Coping strategies
-3. Supportive people & places
-4. People to ask for help
-5. Professional contacts
-6. Ways to make their environment safer
-
-The finished plan can be downloaded and kept for reference. Verified India crisis
-helplines (Tele-MANAS, Vandrevala Foundation, iCALL, KIRAN, Emergency 112) are
-always visible in the sidebar and on a dedicated "I Need Help Now" page.
-
-A **Quick Self Check-in** feature offers gentle, non-diagnostic reflections based
-on recent academic pressure, sleep, and financial stress — deliberately designed
-to never produce a risk score or percentage. Any mention of suicidal thoughts
-immediately and unconditionally routes to real crisis resources.
-
-## Why It's Different
-
-- **Bilingual**: full English and Tamil support, including the downloadable plan —
-  built for students who think and process better in their first language.
-- **No account, no data collection**: everything lives in the browser session only.
-- **Doesn't diagnose or replace professionals** — deliberately avoids risk scores
-  or percentage-based "diagnoses," and repeatedly points to real human support.
-- **Grounded in a real clinical framework**, not an ad-hoc checklist.
-- **Backed by our own trained model**, not just cited statistics.
-
-## Tech Stack
-
-- Python + Streamlit
-- Deployed on Streamlit Community Cloud
-- scikit-learn / XGBoost model trained separately for insight generation
-
-## Data Source
-
-Aggregate insight from the Student Depression Dataset (Kaggle, public), n=27,901.
-No individual data is stored or used by the app itself.
-
-## Disclaimer
-
-RescuePlan is a self-guided planning tool. It does not diagnose mental health
-conditions and is not a substitute for professional care. If you are in immediate
-danger, please contact emergency services (112 in India) or a trusted person right away.
-
-## Future Development
-
-- Expand language support beyond English/Tamil (Hindi, other regional languages)
-- Partner with college counseling cells for pilot testing
-- Add optional reminder feature to revisit/update the plan periodically
-- Explore verified integration with a crisis helpline for warm handoff
+🏮 RescuePlan
+A lantern for hard nights.
+Built by Thamizhmathi, Arunai Engineering College, for RescueHacks 2026
+(Mental Health Support track).
+Why I built this
+I came across the Student Depression Dataset on Kaggle
+while working on an unrelated project, and the numbers stayed with me — 27,901
+Indian students, and depression showing up in nearly 6 out of 10 of them.
+I trained a quick model on it (Logistic Regression, ~91.8% AUC) just to see what
+actually correlated most with depression. Academic pressure and financial stress
+came out near the top, right alongside a history of suicidal thoughts. None of
+that surprised me, honestly — most students I know carry some version of that
+stress. What struck me was how few of us have ever sat down and actually made a
+plan for what to do when things get hard, before they get hard.
+That's what RescuePlan tries to be: something you fill out on a calm day, so it's
+already there on a bad one.
+What it does
+RescuePlan walks a student through six short steps, based on the Stanley-Brown
+Safety Planning Intervention — the same framework crisis counselors actually
+use:
+Warning signs
+Coping strategies
+Supportive people & places
+People to ask for help
+Professional contacts
+Making your environment safer
+At the end, you get a plan you can download and keep. Verified India crisis
+helplines (Tele-MANAS, Vandrevala Foundation, iCALL, KIRAN, and 112) are visible
+the entire time, not buried in a menu.
+There's also a Quick Self Check-in — a few honest questions about how things
+have been going lately (sleep, pressure, stress). I deliberately did not turn
+this into a risk score or percentage. Early on I looked at building exactly that,
+and realized a model that's ~92% accurate on average can still be badly wrong for
+one specific person — and telling someone "Low Risk" after they've just told you
+about suicidal thoughts would be actively dangerous, not helpful. So instead, any
+mention of suicidal thoughts skips scoring entirely and goes straight to real
+crisis resources.
+Why it's bilingual
+I grew up speaking Tamil, and I know plenty of students who think and process
+things more clearly in Tamil than in English, especially when it's something
+personal. So the whole flow — including the downloadable plan — works in both
+languages, not just the UI labels.
+Built with
+Python + Streamlit
+scikit-learn (for the underlying analysis of the depression dataset)
+Deployed on Streamlit Community Cloud
+Data source
+Student Depression Dataset,
+Kaggle, n=27,901. Used only to understand aggregate patterns during development —
+the deployed app doesn't store or process any user's personal data.
+Disclaimer
+RescuePlan is a self-guided planning tool, not a diagnosis and not a replacement
+for professional care. If you're in immediate danger, please contact emergency
+services (112 in India) or someone you trust right now.
+Where I'd take this next
+Pilot it with my college's counseling cell to see if students actually use it
+Add Hindi and other regional languages
+A gentle, optional reminder to revisit the plan every so often — safety plans
+work best when they're kept up to date, not written once and forgotten
+Talk to an actual counselor about whether the check-in questions are asking the
+right things, since I built these off my own instincts, not clinical training
