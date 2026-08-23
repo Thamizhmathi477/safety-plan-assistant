@@ -633,6 +633,10 @@ if st.session_state.page == "home":
 
     st.caption(text["privacy"])
 
+    st.caption(
+        "Data source: [Student Depression Dataset](https://www.kaggle.com/datasets/hopesb/student-depression-dataset), Kaggle, n=27,901."
+    )
+
 
 # ============================================================
 # IMMEDIATE HELP PAGE
@@ -789,26 +793,30 @@ elif st.session_state.page == "checkin":
 
             if academic_pressure >= 4:
                 notes.append(
-                    "Academic pressure sounds heavy right now. It might help to talk "
-                    "to a teacher, mentor, or advisor about your workload."
+                    "Academic pressure sounds heavy right now — maybe exams or "
+                    "placements. It might help to talk to a professor, mentor, "
+                    "or your class advisor about how you're managing your workload."
                 )
 
             if sleep in ["Less than 5 hours", "5-6 hours"]:
                 notes.append(
-                    "Your sleep has been on the shorter side. Rest genuinely affects "
+                    "Your sleep has been on the shorter side lately. It's easy to "
+                    "let this slide during exam season, but it genuinely affects "
                     "how manageable everything else feels."
                 )
 
             if financial_stress >= 4:
                 notes.append(
-                    "Financial stress can weigh on everything else. If your college "
-                    "has a financial aid office or counselor, it may be worth a visit."
+                    "Financial stress can quietly weigh on everything else. Your "
+                    "college may have a scholarship or financial aid office — "
+                    "worth a visit if you haven't checked."
                 )
 
             if study_satisfaction <= 2:
                 notes.append(
-                    "It sounds like studying hasn't been feeling rewarding lately. "
-                    "That's worth mentioning to someone you trust, not just pushing through alone."
+                    "It sounds like studying hasn't felt rewarding lately — not "
+                    "just difficult, but disconnected. That's worth mentioning to "
+                    "someone you trust, not just pushing through on your own."
                 )
 
             if notes:
@@ -942,28 +950,28 @@ elif st.session_state.page == "plan":
         examples = {
 
             "warning_signs":
-                "I stop sleeping properly, become quiet, "
-                "or stop replying to messages.",
+                "I skip meals in the mess, stop replying on WhatsApp for days, "
+                "or start avoiding my friend group in class.",
 
             "coping_strategies":
-                "Walk outside, listen to music, "
-                "write in a journal.",
+                "Go for a walk around the hostel grounds, call my sister, "
+                "watch anime for an hour, write in my journal.",
 
             "supportive_people_places":
-                "My cousin, college library, "
-                "or my favorite peaceful place.",
+                "My roommate, the library terrace, my cousin's house during "
+                "weekends, the temple near my village.",
 
             "people_to_ask_for_help":
-                "Mom — call her. "
-                "Best friend — message them.",
+                "Amma — she always picks up. My senior from the coding club, "
+                "she's been through placement stress too.",
 
             "professional_contacts":
-                "College counselor, family doctor, "
-                "or mental-health helpline.",
+                "College counselor (2nd floor, admin block), Dr. Suresh at the "
+                "PHC back home, Tele-MANAS if I can't reach anyone else.",
 
             "safer_environment":
-                "Stay near family, avoid being alone, "
-                "or move away from unsafe situations.",
+                "Keep my phone away from my desk at night, tell my roommate "
+                "when I'm having a bad week so she checks on me.",
         }
 
         st.markdown(
